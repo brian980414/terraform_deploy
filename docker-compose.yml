@@ -76,7 +76,7 @@ services:
       - "8000:8000"
 
   web:
-    image: brianrestrepo98/amarisfrontend:1.2
+    image: brianrestrepo98/amarisfrontend:v1.2
     container_name: techtest_web
     environment:
       VITE_API_BASE: http://api:8000/api/v1
