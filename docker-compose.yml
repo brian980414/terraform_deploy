@@ -58,7 +58,7 @@ services:
       - mongo
 
   api:
-    image: brianrestrepo98/amarisbackend:latest
+    image: brianrestrepo98/amarisbackend:v1.2
     container_name: techtest_api
     # env_file: ./backend/.env
     environment:
