@@ -76,12 +76,19 @@ services:
       - "8000:8000"
 
   web:
-    image: brianrestrepo98/amarisfrontend:v1.5
+    image: brianrestrepo98/amarisfrontend:v1.5   # desde Docker Hub
     container_name: techtest_web
     environment:
       VITE_API_BASE: https://api.proportfolio.xyz/api/v1
     ports:
-      - "5173:5173"
+      - "5173:5173"   # opcional si quieres seguir sirviendo con 'serve' para pruebas
+    volumes:
+      - /var/www/web:/shared   # <-- carpeta del host que Nginx usará como root
+    command: >
+      sh -c "rm -rf /shared/* &&
+           cp -r /app/dist/* /shared/ &&
+           exec serve -s /shared -l 5173 --single"
+    restart: unless-stopped
 
 # volumes:
 #   pg_data:
