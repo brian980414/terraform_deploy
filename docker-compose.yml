@@ -58,7 +58,7 @@ services:
       - mongo
 
   api:
-    image: brianrestrepo98/amarisbackend:v1.3
+    image: brianrestrepo98/amarisbackend:v1.4
     container_name: techtest_api
     # env_file: ./backend/.env
     environment:
@@ -76,10 +76,10 @@ services:
       - "8000:8000"
 
   web:
-    image: brianrestrepo98/amarisfrontend:v1.2
+    image: brianrestrepo98/amarisfrontend:v1.3
     container_name: techtest_web
     environment:
-      VITE_API_BASE: http://localhost:8000/api/v1
+      VITE_API_BASE: http://api:8000/api/v1
     ports:
       - "5173:5173"
 
