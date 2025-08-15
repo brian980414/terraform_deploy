@@ -1,0 +1,89 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    container_name: techtest_db
+    environment:
+      POSTGRES_DB: btg
+      POSTGRES_USER: btg_user
+      POSTGRES_PASSWORD: P4ssw0rd!2025
+      MONGO_URI: mongodb://mongo:27017
+      MONGO_DB: btg
+      MONGO_TX_COLLECTION: transactions
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U btg_user -d btg"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  mongo:
+    image: mongo:7.0
+    container_name: btg-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: btg
+      MONGO_URI: mongodb://mongo:27017
+      MONGO_DB: btg
+      MONGO_TX_COLLECTION: transactions
+    volumes:
+      - ./mongo_data:/data/db
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval 'db.adminCommand({ ping: 1 }).ok' | grep 1 >/dev/null"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  mongo-express:
+    image: mongo-express:1.0.2
+    container_name: btg-mongo-express
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: admin
+      MONGO_URI: mongodb://mongo:27017
+      MONGO_DB: btg
+      MONGO_TX_COLLECTION: transactions
+    depends_on:
+      - mongo
+
+  api:
+    image: brianrestrepo98/amarisbackend:v1.1
+    container_name: techtest_api
+    env_file: ./backend/.env
+    environment:
+      DB_HOST: db
+      MONGO_URI: mongodb://mongo:27017
+      MONGO_DB: btg
+      MONGO_TX_COLLECTION: transactions
+    depends_on:
+      db:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+
+  web:
+    image: brianrestrepo98/amarisfrontend:v1.1
+    container_name: techtest_web
+    environment:
+      VITE_API_BASE: http://localhost:8000/api/v1
+    ports:
+      - "5173:5173"
+
+
+      
+
+volumes:
+  pg_data:
