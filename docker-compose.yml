@@ -76,7 +76,7 @@ services:
       - "8000:8000"
 
   web:
-    image: brianrestrepo98/amarisfrontend:v1.3
+    image: brianrestrepo98/amarisfrontend:v1.5
     container_name: techtest_web
     environment:
       VITE_API_BASE: https://api.proportfolio.xyz/api/v1
