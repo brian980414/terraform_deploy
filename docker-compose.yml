@@ -13,8 +13,8 @@ services:
       MONGO_TX_COLLECTION: transactions
     ports:
       - "5432:5432"
-    volumes:
-      - pg_data:/var/lib/postgresql/data
+    #volumes:
+      #- pg_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U btg_user -d btg"]
       interval: 5s
@@ -32,8 +32,8 @@ services:
       MONGO_URI: mongodb://mongo:27017
       MONGO_DB: btg
       MONGO_TX_COLLECTION: transactions
-    volumes:
-      - ./mongo_data:/data/db
+    #volumes:
+      #- ./mongo_data:/data/db
     healthcheck:
       test: ["CMD-SHELL", "mongosh --quiet --eval 'db.adminCommand({ ping: 1 }).ok' | grep 1 >/dev/null"]
       interval: 5s
@@ -60,7 +60,7 @@ services:
   api:
     image: brianrestrepo98/amarisbackend:v1.1
     container_name: techtest_api
-    env_file: ./backend/.env
+    #env_file: ./backend/.env
     environment:
       DB_HOST: db
       MONGO_URI: mongodb://mongo:27017
@@ -85,5 +85,5 @@ services:
 
       
 
-volumes:
-  pg_data:
+#volumes:
+#  pg_data:
