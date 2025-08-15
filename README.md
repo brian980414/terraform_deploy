@@ -9,6 +9,9 @@ Este documento cubre **todo el flujo** para desplegar una aplicación completa: 
 * Cuenta y credenciales de **AWS** configuradas localmente.
 * **Terraform** 1.5+ instalado.
 * **SSH key** válida para conexión a la EC2.
+* Cuenta y credenciales de **AWS** configuradas localmente.
+  ```bash
+  aws configure
 * Repositorio con archivo `docker-compose.yml`.
 
   * El servicio `web` copia automáticamente el *build* del frontend en `/var/www/web` en el host.
@@ -154,3 +157,4 @@ sudo certbot --nginx -d web.tudominio.com -d api.tudominio.com
 ---
 
 ✅ Con esto tu infraestructura estará lista: **Terraform** para provisionar, **Docker Compose** para orquestar, y **Nginx** con **Certbot** para servir de forma segura tu aplicación.
+
